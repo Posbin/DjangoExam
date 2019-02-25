@@ -10,7 +10,7 @@ class Fruit(models.Model):
     price = models.PositiveIntegerField()
     reg_date = models.DateField(default = datetime.date.today)
 
-    object = FruitManager()
+    objects = FruitManager()
 
 class Sale(models.Model):
     fruit = models.ForeignKey('Fruit', on_delete = models.CASCADE)

@@ -1,5 +1,26 @@
 {% extends 'FruitSalesMgmt/base.html' %}
 
 {% block content %}
-    <p>fruit list</p>
+    <table class='table'>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>名称</th>
+                <th>単価</th>
+                <th>登録日時</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fruit in fruits %}
+                <tr>
+                    <td>{{ fruit.pk }}</td>
+                    <td>{{ fruit.name }}</td>
+                    <td>{{ fruit.price }}</td>
+                    <td>{{ fruit.reg_date }}</td>
+                    <td><a href="">編集</a> <a href="">削除</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
