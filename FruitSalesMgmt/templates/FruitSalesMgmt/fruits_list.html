@@ -20,9 +20,10 @@
                     <td>{{ fruit.name }}</td>
                     <td>{{ fruit.price }}</td>
                     <td>{{ fruit.reg_date }}</td>
-                    <td><a href="">編集</a> <a href="">削除</a></td>
+                    <td><a href="{% url 'fruits_edit' pk=fruit.pk %}">編集</a> <a href="{% url 'fruits_remove' pk=fruit.pk %}">削除</a></td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+    <input type="button" value="新規追加" onClick="location.href='{% url 'fruits_new' %}';"></input>
 {% endblock %}

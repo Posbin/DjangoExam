@@ -1,0 +1,9 @@
+{% extends 'FruitSalesMgmt/base.html' %}
+
+{% block content %}
+    <h2>果物登録</h2>
+    <form method="POST" class="post-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">登録</button>
+    </form>
+{% endblock %}

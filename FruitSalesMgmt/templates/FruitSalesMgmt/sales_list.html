@@ -21,10 +21,11 @@
                     <td>{{ sale.number }}</td>
                     <td>{{ sale.total }}</td>
                     <td>{{ sale.datetime }}</td>
-                    <td><a href="">編集</a></td>
-                    <td><a href="">削除</a></td>
+                    <td><a href="{% url 'sales_edit' pk=sale.pk %}">編集</a></td>
+                    <td><a href="{% url 'sales_remove' pk=sale.pk %}">削除</a></td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+    <input type="button" value="販売情報登録" onClick="location.href='{% url 'sales_new' %}';"></input>
 {% endblock %}
