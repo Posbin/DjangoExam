@@ -26,12 +26,16 @@
 }
 
 h3 {
-    margin-top: 30px;
     font-size: 1.5em;
+}
+
+.stats h3 {
+    margin-top: 30px;
 }
 
 .fruits-list, .sales-list {
     max-width: 1000px;
+    overflow: hidden;
 }
 
 .fruits-new-btn, .sales-new-btn {
@@ -56,6 +60,15 @@ h3 {
     margin-top: 40px;
     margin-bottom: 40px;
     text-align: left;
+}
+
+.sales-data-upload-form form p {
+    display: inline-block;
+}
+
+.uploaded-message {
+    display: inline-block;
+    background-color: lightgreen;
 }
 
 .all-stats-total {

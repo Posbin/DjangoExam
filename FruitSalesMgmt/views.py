@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
+from django.conf import settings
 from dateutil.relativedelta import relativedelta
 from datetime import datetime, date, timedelta
+import pytz
 from .models import Fruit, Sale
-from .forms import FruitForm, SaleForm
+from .forms import FruitForm, SaleForm, SalesDataUploadForm
 
 def top(request):
     return render(request, 'FruitSalesMgmt/top.html')
@@ -39,8 +41,52 @@ def fruits_remove(request, pk):
     return redirect('fruits_list')
 
 def sales_list(request):
+    uploaded_message = ''
+    if request.method == "POST":
+        upload_form = SalesDataUploadForm(request.POST, request.FILES)
+        if upload_form.is_valid():
+            message = 'CSVファイルからの読み込みを完了しました。（登録成功: {0}件, 登録失敗: {1}件）'
+            success, fail = load_sales_data_from_csv(request.FILES['file'])
+            uploaded_message = message.format(success, fail)
+    else:
+        upload_form = SalesDataUploadForm()
     sales = Sale.objects.all()
-    return render(request, 'FruitSalesMgmt/sales_list.html', {'sales': sales})
+    context = {
+        'sales': sales,
+        'upload_form': upload_form,
+        'uploaded_message': uploaded_message
+    }
+    return render(request, 'FruitSalesMgmt/sales_list.html', context)
+
+def load_sales_data_from_csv(f):
+    success = fail = 0
+    for chunk in f.chunks():
+        rows = chunk.decode('utf-8').split('\n')
+        for row in rows:
+            row = row.strip()
+            if row == '':
+                continue
+            vals = row.split(',')
+            if len(vals) == 4 and create_sale_data(vals):
+                success += 1
+            else:
+                fail += 1
+    return success, fail
+
+def create_sale_data(vals):
+    try:
+        date_time = datetime.strptime(vals[3], '%Y-%m-%d %H:%M')
+        time_zone = pytz.timezone(settings.TIME_ZONE)
+        sale = Sale(
+            fruit=Fruit.objects.get(name=vals[0]),
+            number=int(vals[1]),
+            total=int(vals[2]),
+            datetime=date_time.astimezone(time_zone)
+        )
+        sale.save()
+        return True
+    except (Fruit.DoesNotExist, ValueError) as e:
+        return False
 
 def sales_new(request):
     if request.method == "POST":

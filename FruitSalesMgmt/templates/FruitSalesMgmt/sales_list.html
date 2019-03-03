@@ -4,6 +4,7 @@
     <div class='sales-list'>
         <h2>販売情報管理</h2>
         <p><a href='{% url 'top' %}'>TOP</a> > 販売情報管理</p>
+        <p class='uploaded-message'>{{ uploaded_message }}</p>
         <table class='table table-striped table-bordered' id='sales-table'>
             <thead>
                 <tr>
@@ -29,6 +30,13 @@
             </tbody>
         </table>
         <input type="button" class='sales-new-btn' value="販売情報登録" onClick="location.href='{% url 'sales_new' %}';"></input>
+    </div>
+    <div class='sales-data-upload-form'>
+        <h3>CSV一括登録</h3>
+        <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+            {{ upload_form.as_p }}
+            <button type="submit">CSVアップロード</button>
+        </form>
     </div>
     <script>
         set_datatable('#sales-table', 3, 'desc');
