@@ -1,9 +1,15 @@
 {% extends 'FruitSalesMgmt/base.html' %}
 
 {% block content %}
-    <h2>果物登録</h2>
-    <form method="POST" class="post-form">{% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">登録</button>
-    </form>
+    <div class='fruits-edit'>
+        <div class='fruits-edit-container'>
+            <h2>果物登録</h2>
+            <form method="POST" class="post-form">{% csrf_token %}
+                <div class='fruits-edit-form'>
+                    {{ form.as_p }}
+                </div>
+                <button type="submit">登録</button>
+            </form>
+        </div>
+    </div>
 {% endblock %}

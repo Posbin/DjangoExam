@@ -1,0 +1,64 @@
+
+.page-header {
+    padding: 20px;
+    background-color: black;
+    color: white;
+}
+
+.page-container {
+    margin-bottom: 50px;
+    padding: 20px;
+}
+
+.top {
+    text-align: center;
+}
+
+.top ul {
+    list-style-type: none;
+    margin-top: 50px;
+    padding: 0;
+}
+
+.top ul li {
+    padding-bottom: 25px;
+    font-size: 1.5rem;
+}
+
+h3 {
+    margin-top: 30px;
+    font-size: 1.5em;
+}
+
+.fruits-list, .sales-list {
+    max-width: 1000px;
+}
+
+.fruits-new-btn, .sales-new-btn {
+    margin: 20px;
+    float: right;
+    font-size: 1.2em;
+}
+
+.fruits-edit, .sales-edit {
+    text-align: center;
+}
+
+.fruits-edit-container, .sales-edit-container {
+    display: inline-block;
+}
+
+.fruits-edit-container button, .sales-edit-container button {
+    font-size: 1.2em;
+}
+
+.fruits-edit-form, .sales-edit-form {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    text-align: left;
+}
+
+.all-stats-total {
+    font-size: 1.5em;
+    font-weight: bold;
+}

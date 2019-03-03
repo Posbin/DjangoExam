@@ -1,46 +1,48 @@
 {% extends 'FruitSalesMgmt/base.html' %}
 
 {% block content %}
-    <h2>販売統計情報</h2>
-    <p><a href='{% url 'top' %}'>TOP</a> > 販売統計情報</p>
-    <h3>累計</h3>
-    <p>{{ all_stats_total }}円</p>
-    <h3>月別</h3>
-    <table class='table'>
-        <thead>
-            <tr>
-                <th>月</th>
-                <th>売り上げ</th>
-                <th>内訳</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for month, stat in monthly_stats.items %}
+    <div class='stats'>
+        <h2>販売統計情報</h2>
+        <p><a href='{% url 'top' %}'>TOP</a> > 販売統計情報</p>
+        <h3>累計</h3>
+        <p class='all-stats-total'>{{ all_stats_total }}円</p>
+        <h3>月別</h3>
+        <table class='table table-striped table-bordered'>
+            <thead>
                 <tr>
-                    <td>{{ month }}</td>
-                    <td>{{ stat.total }}</td>
-                    <td>{{ stat.details }}</td>
+                    <th>月</th>
+                    <th>売り上げ</th>
+                    <th>内訳</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <h3>日別</h3>
-    <table class='table'>
-        <thead>
-            <tr>
-                <th>日</th>
-                <th>売り上げ</th>
-                <th>内訳</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for date, stat in daily_stats.items %}
+            </thead>
+            <tbody>
+                {% for month, stat in monthly_stats.items %}
+                    <tr>
+                        <td>{{ month }}</td>
+                        <td>{{ stat.total }}</td>
+                        <td>{{ stat.details }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h3>日別</h3>
+        <table class='table table-striped table-bordered'>
+            <thead>
                 <tr>
-                    <td>{{ date }}</td>
-                    <td>{{ stat.total }}</td>
-                    <td>{{ stat.details }}</td>
+                    <th>日</th>
+                    <th>売り上げ</th>
+                    <th>内訳</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for date, stat in daily_stats.items %}
+                    <tr>
+                        <td>{{ date }}</td>
+                        <td>{{ stat.total }}</td>
+                        <td>{{ stat.details }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

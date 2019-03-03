@@ -75,8 +75,8 @@ def sales_remove(request, pk):
 def stats(request):
     all_sales = Sale.objects.all()
     all_stats = Stat(all_sales)
-    monthly_stats = get_monthly_stats(5)
-    daily_stats = get_daily_stats(5)
+    monthly_stats = get_monthly_stats(3)
+    daily_stats = get_daily_stats(3)
 
     context = {
         'all_stats_total': all_stats.total,
@@ -89,23 +89,25 @@ def get_monthly_stats(num):
     stats = {}
     ago = num - 1
     today = timezone.now()
-    date_i = (today - relativedelta(months=ago)).replace(day=1)        
-    while date_i <= today:
+    date_i = today
+    date_end = today - relativedelta(months=ago)
+    while date_i >= date_end:
         year = date_i.year
         month = date_i.month
         key = "{0}/{1}".format(year, month)
         sales = Sale.objects.filter(datetime__year=year,
                                     datetime__month=month)
         stats[key] = Stat(sales)
-        date_i += relativedelta(months=1)
+        date_i -= relativedelta(months=1)
     return stats
 
 def get_daily_stats(num):
     stats = {}
     ago = num - 1
     today = timezone.now()
-    date_i = today - timedelta(days=ago)
-    while date_i <= today:
+    date_i = today
+    date_end = today - timedelta(days=ago)
+    while date_i >= date_end:
         year = date_i.year
         month = date_i.month
         day = date_i.day
@@ -114,7 +116,7 @@ def get_daily_stats(num):
                                     datetime__month=month,
                                     datetime__day=day)
         stats[key] = Stat(sales)
-        date_i += timedelta(days=1)
+        date_i -= timedelta(days=1)
     return stats
     
 class Stat:

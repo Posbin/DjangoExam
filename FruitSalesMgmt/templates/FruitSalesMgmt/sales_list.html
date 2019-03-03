@@ -1,31 +1,36 @@
 {% extends 'FruitSalesMgmt/base.html' %}
 
 {% block content %}
-    <h2>販売情報管理</h2>
-    <p><a href='{% url 'top' %}'>TOP</a> > 販売情報管理</p>
-    <table class='table'>
-        <thead>
-            <tr>
-                <th>果物</th>
-                <th>個数</th>
-                <th>売り上げ</th>
-                <th>販売日時</th>
-                <th></th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for sale in sales %}
+    <div class='sales-list'>
+        <h2>販売情報管理</h2>
+        <p><a href='{% url 'top' %}'>TOP</a> > 販売情報管理</p>
+        <table class='table table-striped table-bordered' id='sales-table'>
+            <thead>
                 <tr>
-                    <td>{{ sale.fruit.name }}</td>
-                    <td>{{ sale.number }}</td>
-                    <td>{{ sale.total }}</td>
-                    <td>{{ sale.datetime }}</td>
-                    <td><a href="{% url 'sales_edit' pk=sale.pk %}">編集</a></td>
-                    <td><a href="{% url 'sales_remove' pk=sale.pk %}">削除</a></td>
+                    <th>果物</th>
+                    <th>個数</th>
+                    <th>売り上げ</th>
+                    <th>販売日時</th>
+                    <th></th>
+                    <th></th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <input type="button" value="販売情報登録" onClick="location.href='{% url 'sales_new' %}';"></input>
+            </thead>
+            <tbody>
+                {% for sale in sales %}
+                    <tr>
+                        <td>{{ sale.fruit.name }}</td>
+                        <td>{{ sale.number }}</td>
+                        <td>{{ sale.total }}</td>
+                        <td>{{ sale.datetime }}</td>
+                        <td><a href="{% url 'sales_edit' pk=sale.pk %}">編集</a></td>
+                        <td><a href="{% url 'sales_remove' pk=sale.pk %}">削除</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <input type="button" class='sales-new-btn' value="販売情報登録" onClick="location.href='{% url 'sales_new' %}';"></input>
+    </div>
+    <script>
+        set_datatable('#sales-table', 3, 'desc');
+    </script>
 {% endblock %}

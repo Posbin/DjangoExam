@@ -1,12 +1,25 @@
+{% load static %}
 <html>
     <head>
         <title>Fruit Sales Management</title>
+        <!-- Bootstrap -->
+        <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+        <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <!-- jQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <!-- Datatable -->
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css"/> 
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
+
+        <link rel="stylesheet" href="{% static 'css/FruitSalesMgmt.css' %}">
+        <script type="text/javascript" src="{% static 'js/datatable.js' %}"></script>
     </head>
     <body>
         <div class='page-header'>
             <h1>果物販売管理</h1>
         </div>
-        <div class='container'>
+        <div class='page-container'>
             {% block content %}
             {% endblock %}
         </div>

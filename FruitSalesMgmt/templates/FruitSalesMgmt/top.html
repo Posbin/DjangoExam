@@ -1,8 +1,12 @@
 {% extends 'FruitSalesMgmt/base.html' %}
 
 {% block content %}
-    <h2>管理TOP</h2>
-    <a href="{% url 'fruits_list' %}">果物マスタ管理</a>
-    <a href="{% url 'sales_list' %}">販売情報管理</a>
-    <a href="{% url 'stats' %}">販売統計情報</a>
+    <div class="top">
+        <h2>管理TOP</h2>
+        <ul>
+            <li><a href="{% url 'fruits_list' %}">果物マスタ管理</a></li>
+            <li><a href="{% url 'sales_list' %}">販売情報管理</a></li>
+            <li><a href="{% url 'stats' %}">販売統計情報</a></li>
+        </ul>
+    </div>
 {% endblock %}
