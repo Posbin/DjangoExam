@@ -1,12 +1,14 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.utils import timezone
-from django.conf import settings
-from dateutil.relativedelta import relativedelta
-from datetime import datetime, date, timedelta
+from datetime import date, datetime, timedelta
+
 import pytz
-from .models import Fruit, Sale
+from dateutil.relativedelta import relativedelta
+from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
+
 from .forms import FruitForm, SaleForm, SalesDataUploadForm
+from .models import Fruit, Sale
 
 @login_required
 def top(request):
@@ -14,7 +16,7 @@ def top(request):
 
 @login_required
 def fruits_list(request):
-    fruits = Fruit.objects.all()
+    fruits = Fruit.objects.all().order_by('-id')
     return render(request, 'FruitSalesMgmt/fruits_list.html', {'fruits': fruits})
 
 @login_required
@@ -57,7 +59,7 @@ def sales_list(request):
             uploaded_message = message.format(success, fail)
     else:
         upload_form = SalesDataUploadForm()
-    sales = Sale.objects.all()
+    sales = Sale.objects.all().order_by('-datetime')
     context = {
         'sales': sales,
         'upload_form': upload_form,

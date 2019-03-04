@@ -1,5 +1,6 @@
-from django.db import models
 import datetime
+
+from django.db import models
 
 class FruitManager(models.Manager):
     def get_by_natural_key(self, name):

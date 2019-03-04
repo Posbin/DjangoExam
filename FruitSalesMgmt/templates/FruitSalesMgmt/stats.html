@@ -22,7 +22,7 @@
                 {% for month, stat in monthly_stats.items %}
                     <tr>
                         <td>{{ month }}</td>
-                        <td>{{ stat.total }}</td>
+                        <td>{{ stat.total }}円</td>
                         <td>{{ stat.details }}</td>
                     </tr>
                 {% endfor %}
@@ -44,7 +44,7 @@
                 {% for date, stat in daily_stats.items %}
                     <tr>
                         <td>{{ date }}</td>
-                        <td>{{ stat.total }}</td>
+                        <td>{{ stat.total }}円</td>
                         <td>{{ stat.details }}</td>
                     </tr>
                 {% endfor %}

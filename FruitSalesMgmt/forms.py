@@ -1,4 +1,5 @@
 from django import forms
+
 from .models import Fruit, Sale
 
 class FruitForm(forms.ModelForm):

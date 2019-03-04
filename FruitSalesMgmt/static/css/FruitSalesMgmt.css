@@ -11,7 +11,8 @@
 }
 
 .fruits-list,
-.sales-list {
+.sales-list
+.stats {
     max-width: 1000px;
     overflow: hidden;
 }
