@@ -1,0 +1,29 @@
+{% extends "FruitSalesMgmt/base.html" %}
+
+{% block content %}
+    <div class='login'>
+        <div class='login-container'>
+            <h2>ログイン</h2>
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <div class='login-form'>
+                    <table>
+                    <tr>
+                        <td>{{ form.username.label_tag }}</td>
+                        <td>{{ form.username }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.password.label_tag }}</td>
+                        <td>{{ form.password }}</td>
+                    </tr>
+                    </table>
+                </div>
+                <input type="submit" value="ログイン">
+                <input type="hidden" name="next" value="{{ next }}">
+            </form>
+            {% if form.errors %}
+                <p class='login-error-message'>ユーザー名、またはパスワードが間違っています。</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

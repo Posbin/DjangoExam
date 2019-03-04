@@ -44,11 +44,11 @@ h3 {
     font-size: 1.2em;
 }
 
-.fruits-edit, .sales-edit {
+.fruits-edit, .sales-edit, .login {
     text-align: center;
 }
 
-.fruits-edit-container, .sales-edit-container {
+.fruits-edit-container, .sales-edit-container, .login-container {
     display: inline-block;
 }
 
@@ -56,7 +56,7 @@ h3 {
     font-size: 1.2em;
 }
 
-.fruits-edit-form, .sales-edit-form {
+.fruits-edit-form, .sales-edit-form, .login-form {
     margin-top: 40px;
     margin-bottom: 40px;
     text-align: left;
@@ -64,6 +64,10 @@ h3 {
 
 .sales-data-upload-form form p {
     display: inline-block;
+}
+
+.login-error-message {
+    background-color: lightcoral;
 }
 
 .uploaded-message {

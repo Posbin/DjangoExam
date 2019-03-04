@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.conf import settings
 from dateutil.relativedelta import relativedelta
@@ -7,13 +8,16 @@ import pytz
 from .models import Fruit, Sale
 from .forms import FruitForm, SaleForm, SalesDataUploadForm
 
+@login_required
 def top(request):
     return render(request, 'FruitSalesMgmt/top.html')
 
+@login_required
 def fruits_list(request):
     fruits = Fruit.objects.all()
     return render(request, 'FruitSalesMgmt/fruits_list.html', {'fruits': fruits})
 
+@login_required
 def fruits_new(request):
     if request.method == "POST":
         form = FruitForm(request.POST)
@@ -24,6 +28,7 @@ def fruits_new(request):
         form = FruitForm()
     return render(request, 'FruitSalesMgmt/fruits_edit.html', {'form': form})
 
+@login_required
 def fruits_edit(request, pk):
     fruit = get_object_or_404(Fruit, pk=pk)
     if request.method == "POST":
@@ -35,11 +40,13 @@ def fruits_edit(request, pk):
         form = FruitForm(instance=fruit)
     return render(request, 'FruitSalesMgmt/fruits_edit.html', {'form': form})
 
+@login_required
 def fruits_remove(request, pk):
     fruit = get_object_or_404(Fruit, pk=pk)
     fruit.delete()
     return redirect('fruits_list')
 
+@login_required
 def sales_list(request):
     uploaded_message = ''
     if request.method == "POST":
@@ -88,6 +95,7 @@ def create_sale_data(vals):
     except (Fruit.DoesNotExist, ValueError) as e:
         return False
 
+@login_required
 def sales_new(request):
     if request.method == "POST":
         form = SaleForm(request.POST)
@@ -100,6 +108,7 @@ def sales_new(request):
         form = SaleForm()
     return render(request, 'FruitSalesMgmt/sales_edit.html', {'form': form})
 
+@login_required
 def sales_edit(request, pk):
     sale = get_object_or_404(Sale, pk=pk)
     if request.method == "POST":
@@ -113,11 +122,13 @@ def sales_edit(request, pk):
         form = SaleForm(instance=sale)
     return render(request, 'FruitSalesMgmt/sales_edit.html', {'form': form})
 
+@login_required
 def sales_remove(request, pk):
     sale = get_object_or_404(Sale, pk=pk)
     sale.delete()
     return redirect('sales_list')
 
+@login_required
 def stats(request):
     all_sales = Sale.objects.all()
     all_stats = Stat(all_sales)
