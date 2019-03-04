@@ -8,7 +8,7 @@ class FruitManager(models.Manager):
 class Fruit(models.Model):
     name = models.CharField('名称', unique = True, max_length = 30)
     price = models.PositiveIntegerField('単価')
-    reg_date = models.DateField(default = datetime.date.today)
+    reg_date = models.DateField('登録日時', default = datetime.date.today)
 
     objects = FruitManager()
 
@@ -18,7 +18,7 @@ class Fruit(models.Model):
 class Sale(models.Model):
     fruit = models.ForeignKey('Fruit', on_delete = models.CASCADE, verbose_name='果物')
     number = models.PositiveIntegerField('個数')
-    total = models.PositiveIntegerField()
+    total = models.PositiveIntegerField('売り上げ')
     datetime = models.DateTimeField('販売日時')
 
     def __str__(self):

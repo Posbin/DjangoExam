@@ -4,7 +4,7 @@
     <div class='sales-edit'>
         <div class='sales-edit-container'>
             <h2>販売情報登録</h2>
-            <form method="POST" class="post-form">{% csrf_token %}
+            <form method="POST">{% csrf_token %}
                 <div class='sales-edit-form'>
                     {{ form.as_p }}
                 </div>

@@ -10,8 +10,38 @@
     padding: 20px;
 }
 
-.top {
+.fruits-list,
+.sales-list {
+    max-width: 1000px;
+    overflow: hidden;
+}
+
+.fruits-new-btn,
+.sales-new-btn {
+    margin: 20px;
+    float: right;
+    font-size: 1.2em;
+}
+
+.login,
+.top,
+.fruits-edit,
+.sales-edit {
     text-align: center;
+}
+
+.login-container,
+.fruits-edit-container,
+.sales-edit-container {
+    display: inline-block;
+}
+
+.login-form,
+.fruits-edit-form,
+.sales-edit-form {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    text-align: left;
 }
 
 .top ul {
@@ -31,35 +61,6 @@ h3 {
 
 .stats h3 {
     margin-top: 30px;
-}
-
-.fruits-list, .sales-list {
-    max-width: 1000px;
-    overflow: hidden;
-}
-
-.fruits-new-btn, .sales-new-btn {
-    margin: 20px;
-    float: right;
-    font-size: 1.2em;
-}
-
-.fruits-edit, .sales-edit, .login {
-    text-align: center;
-}
-
-.fruits-edit-container, .sales-edit-container, .login-container {
-    display: inline-block;
-}
-
-.fruits-edit-container button, .sales-edit-container button {
-    font-size: 1.2em;
-}
-
-.fruits-edit-form, .sales-edit-form, .login-form {
-    margin-top: 40px;
-    margin-bottom: 40px;
-    text-align: left;
 }
 
 .sales-data-upload-form form p {
