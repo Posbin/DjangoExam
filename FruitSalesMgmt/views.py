@@ -59,7 +59,7 @@ def sales_list(request):
             uploaded_message = message.format(success, fail)
     else:
         upload_form = SalesDataUploadForm()
-    sales = Sale.objects.all().order_by('-datetime')
+    sales = Sale.objects.select_related().all().order_by('-datetime')
     context = {
         'sales': sales,
         'upload_form': upload_form,
@@ -132,7 +132,7 @@ def sales_remove(request, pk):
 
 @login_required
 def stats(request):
-    all_sales = Sale.objects.all()
+    all_sales = Sale.objects.select_related().all()
     all_stats = Stat(all_sales)
     monthly_stats = get_monthly_stats(3)
     daily_stats = get_daily_stats(3)
@@ -154,8 +154,8 @@ def get_monthly_stats(num):
         year = date_i.year
         month = date_i.month
         key = "{0}/{1}".format(year, month)
-        sales = Sale.objects.filter(datetime__year=year,
-                                    datetime__month=month)
+        sales = Sale.objects.select_related().filter(datetime__year=year,
+                                                     datetime__month=month)
         stats[key] = Stat(sales)
         date_i -= relativedelta(months=1)
     return stats
@@ -171,9 +171,9 @@ def get_daily_stats(num):
         month = date_i.month
         day = date_i.day
         key = "{0}/{1}/{2}".format(year, month, day)
-        sales = Sale.objects.filter(datetime__year=year,
-                                    datetime__month=month,
-                                    datetime__day=day)
+        sales = Sale.objects.select_related().filter(datetime__year=year,
+                                                     datetime__month=month,
+                                                     datetime__day=day)
         stats[key] = Stat(sales)
         date_i -= timedelta(days=1)
     return stats
