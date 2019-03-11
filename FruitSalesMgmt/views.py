@@ -134,8 +134,8 @@ def sales_remove(request, pk):
 def stats(request):
     all_sales = Sale.objects.select_related().all()
     all_stats = Stat(all_sales)
-    monthly_stats = get_monthly_stats(3)
-    daily_stats = get_daily_stats(3)
+    monthly_stats = get_monthly_stats(all_sales, 3)
+    daily_stats = get_daily_stats(all_sales, 3)
 
     context = {
         'all_stats_total': all_stats.total,
@@ -144,40 +144,34 @@ def stats(request):
     }
     return render(request, 'FruitSalesMgmt/stats.html', context)
 
-def get_monthly_stats(num):
+def get_monthly_stats(all_sales, num):
     stats = {}
     ago = num - 1
-    today = timezone.now()
-    date_i = today
-    date_end = today - relativedelta(months=ago)
+    this_month = timezone.now().date().replace(day=1)
+    date_i = this_month
+    date_end = this_month - relativedelta(months=ago)
     while date_i >= date_end:
-        year = date_i.year
-        month = date_i.month
-        key = "{0}/{1}".format(year, month)
-        sales = Sale.objects.select_related().filter(datetime__year=year,
-                                                     datetime__month=month)
+        key = "{0}/{1}".format(date_i.year, date_i.month)
+        evaluator = lambda s: s.datetime.date().replace(day=1) == date_i
+        sales = list(filter(evaluator, all_sales))
         stats[key] = Stat(sales)
         date_i -= relativedelta(months=1)
     return stats
 
-def get_daily_stats(num):
+def get_daily_stats(all_sales, num):
     stats = {}
     ago = num - 1
-    today = timezone.now()
+    today = timezone.now().date()
     date_i = today
     date_end = today - timedelta(days=ago)
     while date_i >= date_end:
-        year = date_i.year
-        month = date_i.month
-        day = date_i.day
-        key = "{0}/{1}/{2}".format(year, month, day)
-        sales = Sale.objects.select_related().filter(datetime__year=year,
-                                                     datetime__month=month,
-                                                     datetime__day=day)
+        key = "{0}/{1}/{2}".format(date_i.year, date_i.month, date_i.day)
+        evaluator = lambda s: s.datetime.date() == date_i
+        sales = list(filter(evaluator, all_sales))
         stats[key] = Stat(sales)
         date_i -= timedelta(days=1)
     return stats
-    
+
 class Stat:
     def __init__(self, sales):
         self.sales = sales
