@@ -31,7 +31,7 @@
                 {% endfor %}
             </tbody>
         </table>
-        <input type="button" class='fruits-new-btn' value="新規追加" onClick="location.href='{% url 'fruits_new' %}';"></input>
+        <input type="button" class='fruits-new-btn' value="新規追加" onClick="location.href='{% url 'fruits_create' %}';"></input>
     </div>
     <script>
         set_datatable('#fruits-table');

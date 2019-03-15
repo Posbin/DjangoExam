@@ -1,4 +1,5 @@
-from datetime import date, datetime, timedelta
+import csv
+from datetime import datetime, timedelta
 
 import pytz
 from dateutil.relativedelta import relativedelta
@@ -20,7 +21,7 @@ def fruits_list(request):
     return render(request, 'FruitSalesMgmt/fruits_list.html', {'fruits': fruits})
 
 @login_required
-def fruits_new(request):
+def fruits_create(request):
     if request.method == "POST":
         form = FruitForm(request.POST)
         if form.is_valid():
@@ -69,36 +70,35 @@ def sales_list(request):
 
 def load_sales_data_from_csv(f):
     success = fail = 0
-    for chunk in f.chunks():
-        rows = chunk.decode('utf-8').split('\n')
-        for row in rows:
-            row = row.strip()
-            if row == '':
-                continue
-            vals = row.split(',')
-            if len(vals) == 4 and create_sale_data(vals):
-                success += 1
-            else:
-                fail += 1
+    decoded_file = f.read().decode('utf-8').splitlines()
+    reader = csv.reader(decoded_file)
+    for row in reader:
+        sale = get_sale_data(row)
+        if sale is not None and sale.total > 0:
+            sale.save()
+            success += 1
+        else:
+            fail += 1
     return success, fail
 
-def create_sale_data(vals):
+def get_sale_data(row):
+    if len(row) != 4:
+        return None
+    time_zone = pytz.timezone(settings.TIME_ZONE)
     try:
-        date_time = datetime.strptime(vals[3], '%Y-%m-%d %H:%M')
-        time_zone = pytz.timezone(settings.TIME_ZONE)
         sale = Sale(
-            fruit=Fruit.objects.get(name=vals[0]),
-            number=int(vals[1]),
-            total=int(vals[2]),
-            datetime=date_time.astimezone(time_zone)
+            fruit=Fruit.objects.get(name=row[0]),
+            number=int(row[1]),
+            total=int(row[2]),
+            datetime=datetime.strptime(row[3], '%Y-%m-%d %H:%M')
+                             .astimezone(time_zone)
         )
-        sale.save()
-        return True
+        return sale
     except (Fruit.DoesNotExist, ValueError) as e:
-        return False
+        return None
 
 @login_required
-def sales_new(request):
+def sales_create(request):
     if request.method == "POST":
         form = SaleForm(request.POST)
         if form.is_valid():
@@ -107,7 +107,7 @@ def sales_new(request):
             sale.save()
             return redirect('sales_list')
     else:
-        form = SaleForm()
+        form = SaleForm(initial={'datetime': datetime.now()})
     return render(request, 'FruitSalesMgmt/sales_edit.html', {'form': form})
 
 @login_required
@@ -148,28 +148,24 @@ def get_monthly_stats(all_sales, num):
     stats = {}
     ago = num - 1
     this_month = timezone.now().date().replace(day=1)
-    date_i = this_month
-    date_end = this_month - relativedelta(months=ago)
-    while date_i >= date_end:
-        key = "{0}/{1}".format(date_i.year, date_i.month)
-        evaluator = lambda s: s.datetime.date().replace(day=1) == date_i
+    dates = [this_month - relativedelta(months=ago) for ago in range(num)]
+    for date in dates:
+        key = "{0}/{1}".format(date.year, date.month)
+        evaluator = lambda s: s.datetime.date().replace(day=1) == date
         sales = list(filter(evaluator, all_sales))
         stats[key] = Stat(sales)
-        date_i -= relativedelta(months=1)
     return stats
 
 def get_daily_stats(all_sales, num):
     stats = {}
     ago = num - 1
     today = timezone.now().date()
-    date_i = today
-    date_end = today - timedelta(days=ago)
-    while date_i >= date_end:
-        key = "{0}/{1}/{2}".format(date_i.year, date_i.month, date_i.day)
-        evaluator = lambda s: s.datetime.date() == date_i
+    dates = [today - timedelta(days=ago) for ago in range(num)]
+    for date in dates:
+        key = "{0}/{1}/{2}".format(date.year, date.month, date.day)
+        evaluator = lambda s: s.datetime.date() == date
         sales = list(filter(evaluator, all_sales))
         stats[key] = Stat(sales)
-        date_i -= timedelta(days=1)
     return stats
 
 class Stat:
