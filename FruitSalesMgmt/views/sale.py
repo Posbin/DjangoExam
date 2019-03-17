@@ -16,7 +16,8 @@ def sales_list(request):
     if request.method == "POST":
         upload_form = SalesDataUploadForm(request.POST, request.FILES)
         if upload_form.is_valid():
-            message = 'CSVファイルからの読み込みを完了しました。（登録成功: {0}件, 登録失敗: {1}件）'
+            message = 'CSVファイルからの読み込みを完了しました。\
+                      （登録成功: {0}件, 登録失敗: {1}件）'
             success, fail = load_sales_data_from_csv(request.FILES['file'])
             uploaded_message = message.format(success, fail)
     else:
@@ -49,15 +50,15 @@ def get_sale_data(row):
         return None
     time_zone = pytz.timezone(settings.TIME_ZONE)
     try:
+        dt = datetime.strptime(row[3], '%Y-%m-%d %H:%M')
         sale = Sale(
             fruit=Fruit.objects.get(name=row[0]),
             number=int(row[1]),
             total=int(row[2]),
-            datetime=datetime.strptime(row[3], '%Y-%m-%d %H:%M')
-                             .astimezone(time_zone)
+            datetime=dt.astimezone(time_zone)
         )
         return sale
-    except (Fruit.DoesNotExist, ValueError) as e:
+    except (Fruit.DoesNotExist, ValueError):
         return None
 
 

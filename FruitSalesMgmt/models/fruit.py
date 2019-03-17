@@ -2,6 +2,7 @@ from datetime import date
 
 from django.db import models
 
+
 class FruitManager(models.Manager):
     def get_by_natural_key(self, name):
         return self.get(name=name)
@@ -16,4 +17,3 @@ class Fruit(models.Model):
 
     def __str__(self):
         return self.name
-        

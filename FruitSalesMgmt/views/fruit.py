@@ -8,7 +8,8 @@ from ..models import Fruit
 @login_required
 def fruits_list(request):
     fruits = Fruit.objects.all().order_by('-id')
-    return render(request, 'FruitSalesMgmt/fruits_list.html', {'fruits': fruits})
+    return render(request, 'FruitSalesMgmt/fruits_list.html',
+                  {'fruits': fruits})
 
 
 @login_required

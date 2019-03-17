@@ -25,28 +25,32 @@ def stats(request):
 
 def get_monthly_stats(all_sales, num):
     stats = {}
-    ago = num - 1
     this_month = timezone.now().date().replace(day=1)
     dates = [this_month - relativedelta(months=ago) for ago in range(num)]
     for date in dates:
         key = "{0}/{1}".format(date.year, date.month)
-        evaluator = lambda s: s.datetime.date().replace(day=1) == date
-        sales = list(filter(evaluator, all_sales))
+        sales = list(filter(same_month_filter(date), all_sales))
         stats[key] = Stat(sales)
     return stats
 
 
 def get_daily_stats(all_sales, num):
     stats = {}
-    ago = num - 1
     today = timezone.now().date()
     dates = [today - timedelta(days=ago) for ago in range(num)]
     for date in dates:
         key = "{0}/{1}/{2}".format(date.year, date.month, date.day)
-        evaluator = lambda s: s.datetime.date() == date
-        sales = list(filter(evaluator, all_sales))
+        sales = list(filter(same_day_filter(date), all_sales))
         stats[key] = Stat(sales)
     return stats
+
+
+def same_month_filter(date):
+    return lambda s: s.datetime.date().replace(day=1) == date
+
+
+def same_day_filter(date):
+    return lambda s: s.datetime.date() == date
 
 
 class Stat:
@@ -63,4 +67,5 @@ class Stat:
         return ', '.join(details_list)
 
     def __detail(self, sale):
-        return '{0}: {1}円({2})'.format(sale.fruit.name, sale.total, sale.number)
+        message = '{0}: {1}円({2})'
+        return message.format(sale.fruit.name, sale.total, sale.number)
