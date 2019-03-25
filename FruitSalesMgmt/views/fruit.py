@@ -1,12 +1,12 @@
+"""
+果物マスタ管理
+"""
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 
 from ..forms import FruitForm
 from ..models import Fruit
-
-"""
-果物マスタ管理
-"""
 
 
 @login_required

@@ -1,3 +1,7 @@
+"""
+販売情報管理
+"""
+
 import csv
 from datetime import datetime
 
@@ -8,10 +12,6 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from ..forms import SaleForm, SalesDataUploadForm
 from ..models import Fruit, Sale
-
-"""
-販売情報管理
-"""
 
 
 @login_required
