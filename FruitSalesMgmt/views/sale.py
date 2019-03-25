@@ -37,7 +37,7 @@ def load_sales_data_from_csv(f):
     reader = csv.reader(decoded_file)
     for row in reader:
         sale = get_sale_data(row)
-        if sale is not None and sale.total > 0:
+        if sale is not None and sale.number > 0 and sale.total > 0:
             sale.save()
             success += 1
         else:
