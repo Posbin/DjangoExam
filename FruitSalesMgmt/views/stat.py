@@ -33,13 +33,13 @@ def stats(request):
 def get_monthly_stats(all_sales, num):
     """
     実行時の日時から指定した月数分までの各年月ごとに販売情報を抽出して、
-    年月をキー、集計情報（Stat）を値とした辞書で返す。
+    年月を表す文字列をキー、集計情報（Stat）を値とした辞書で返す。
 
     :param all_sales: 販売情報のリスト
     :type all_sales: list
     :param num: 取得する月数
     :type num: int
-    :returns: 年月をキー、集計情報（Stat）を値とした辞書
+    :returns: 年月を表す文字列をキー、集計情報（Stat）を値とした辞書
     :rtype: dict
     """
     stats = {}
@@ -55,13 +55,13 @@ def get_monthly_stats(all_sales, num):
 def get_daily_stats(all_sales, num):
     """
     実行時の日時から指定した日数分までの各年月日ごとに販売情報を抽出して、
-    年月日をキー、集計情報（Stat）を値とした辞書で返す。
+    年月日を表す文字列をキー、集計情報（Stat）を値とした辞書で返す。
 
     :param all_sales: 販売情報のリスト
     :type all_sales: list
     :param num: 取得する日数
     :type num: int
-    :returns: 年月日をキー、集計情報（Stat）を値とした辞書
+    :returns: 年月日を表す文字列をキー、集計情報（Stat）を値とした辞書
     :rtype: dict
     """
     stats = {}
@@ -123,7 +123,9 @@ class Stat:
     @property
     def details(self):
         """
-        販売情報リストの内訳をカンマ区切りで取得
+        販売情報リストの内訳を以下のようにカンマ区切りで取得。\n
+        'ブルーベリー: 3000円(10), レモン: 1600円(20)
+        , パイナップル: 2500円(10)'
 
         :returns: 販売情報リストの内訳
         :rtype: str
@@ -133,7 +135,8 @@ class Stat:
 
     def __detail(self, sale):
         """
-        販売情報の内訳を仕様のフォーマットに従って取得
+        販売情報の内訳を以下のようなフォーマットで取得\n
+        'ブルーベリー: 3000円(10)'
 
         :param sale: 販売情報
         :type sale: Sale
