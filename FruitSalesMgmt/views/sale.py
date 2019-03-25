@@ -1,3 +1,7 @@
+"""
+販売情報管理
+"""
+
 import csv
 from datetime import datetime
 
@@ -12,6 +16,9 @@ from ..models import Fruit, Sale
 
 @login_required
 def sales_list(request):
+    """
+    一覧画面
+    """
     uploaded_message = ''
     if request.method == "POST":
         upload_form = SalesDataUploadForm(request.POST, request.FILES)
@@ -32,6 +39,15 @@ def sales_list(request):
 
 
 def load_sales_data_from_csv(f):
+    """
+    CSVファイルを読み込んで販売情報の登録を行う。
+    登録処理の成功数、失敗数を戻り値として返す。
+
+    :param f: CSVファイル
+    :type f: UploadedFile
+    :returns: 登録処理の成功数、失敗数
+    :rtype: (int, int)
+    """
     success = fail = 0
     decoded_file = f.read().decode('utf-8').splitlines()
     reader = csv.reader(decoded_file)
@@ -46,6 +62,15 @@ def load_sales_data_from_csv(f):
 
 
 def get_sale_data(row):
+    """
+    CSVファイルの各行の値を渡して、販売情報データに変換する。
+    変換できない場合は、Noneを返す。
+
+    :param row: CSVファイルの各行
+    :type row: list
+    :returns: 販売情報データ
+    :rtype: Sale
+    """
     if len(row) != 4:
         return None
     time_zone = pytz.timezone(settings.TIME_ZONE)
@@ -64,6 +89,9 @@ def get_sale_data(row):
 
 @login_required
 def sales_create(request):
+    """
+    販売情報追加
+    """
     if request.method == "POST":
         form = SaleForm(request.POST)
         if form.is_valid():
@@ -78,6 +106,9 @@ def sales_create(request):
 
 @login_required
 def sales_edit(request, pk):
+    """
+    編集
+    """
     sale = get_object_or_404(Sale, pk=pk)
     if request.method == "POST":
         form = SaleForm(request.POST, instance=sale)
@@ -93,6 +124,9 @@ def sales_edit(request, pk):
 
 @login_required
 def sales_remove(request, pk):
+    """
+    削除
+    """
     sale = get_object_or_404(Sale, pk=pk)
     sale.delete()
     return redirect('sales_list')
