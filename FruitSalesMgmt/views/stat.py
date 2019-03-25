@@ -28,7 +28,7 @@ def get_monthly_stats(all_sales, num):
     this_month = timezone.now().date().replace(day=1)
     dates = [this_month - relativedelta(months=ago) for ago in range(num)]
     for date in dates:
-        key = '{:%Y/%m}'.format(date)
+        key = "{0}/{1}".format(date.year, date.month)
         sales = list(filter(same_month_filter(date), all_sales))
         stats[key] = Stat(sales)
     return stats
@@ -39,7 +39,7 @@ def get_daily_stats(all_sales, num):
     today = timezone.now().date()
     dates = [today - timedelta(days=ago) for ago in range(num)]
     for date in dates:
-        key = '{:%Y/%m/%d}'.format(date)
+        key = "{0}/{1}/{2}".format(date.year, date.month, date.day)
         sales = list(filter(same_day_filter(date), all_sales))
         stats[key] = Stat(sales)
     return stats
